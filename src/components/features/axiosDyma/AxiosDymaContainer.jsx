@@ -24,7 +24,7 @@ class AxiosDymaContainer extends Component {
   }
 
   handleAddUser = (user) => {
-    console.log("AAAAAAAAAAAAAAAAA", user);
+    console.log("AAAAAAAAAAAAA", user);
   };
 
   render() {
