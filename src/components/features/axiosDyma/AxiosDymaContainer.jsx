@@ -1,11 +1,32 @@
 import React, { Component } from "react";
 import { ListUsers, AddUsers } from "../../../components";
+import axios from "axios";
+
+const userEndpoint = "https://jsonplaceholder.typicode.com/users";
 
 class AxiosDymaContainer extends Component {
   state = {
     users: [],
     selectedUser: null,
   };
+
+  componentDidMount() {
+    // const {data: users} = await axios.get(userEndpoint);
+    // this.setState({
+    //   users
+    // })
+
+    axios
+      .get(userEndpoint)
+      .then((response) => response.data)
+      .then((users) => this.setState({ users }))
+      .catch((err) => console.log(err));
+  }
+
+  handleAddUser = (user) => {
+    console.log("AAAAAAAAAAAAAAAAA", user);
+  };
+
   render() {
     return (
       <div
@@ -18,6 +39,7 @@ class AxiosDymaContainer extends Component {
         />
         <hr className="w-100 my-5" />
         <AddUsers
+          onSave={this.handleAddUser}
           user={
             this.state.users && this.state.users[this.state.selectedUser]
               ? this.state.users[this.state.selectedUser]

@@ -9,7 +9,7 @@ class AddUser extends Component {
   };
 
   submit = (values, actions) => {
-    console.log(values);
+    this.props.onSave(values);
   };
 
   render() {
