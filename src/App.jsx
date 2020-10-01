@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import "./App.css";
+import { ToastContainer } from 'react-toastify';
 import { Route, Switch, Redirect } from "react-router-dom";
 import {
   HocContainer,
@@ -13,6 +14,7 @@ import {
 function App() {
   return (
     <Fragment>
+      <ToastContainer />
       <NavBar />
       <main className="container-fluid">
         <Switch>

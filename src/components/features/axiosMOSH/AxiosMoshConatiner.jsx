@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
+import http from '../../../services/http.services';
+import { toast} from 'react-toastify';
 
 const apiEndPoint = "/posts";
 
@@ -10,7 +11,7 @@ class AxiosMoshContainer extends Component {
   };
 
   async componentDidMount() {
-    const { data: posts } = await axios.get(apiEndPoint);
+    const { data: posts } = await http.get(apiEndPoint);
     this.setState({
       posts,
     });
@@ -18,7 +19,7 @@ class AxiosMoshContainer extends Component {
 
   handleAdd = async () => {
     const obj = { title: "Test", body: "TEST TEST TEST" };
-    const { data: post } = await axios.post(apiEndPoint, obj);
+    const { data: post } = await http.post(apiEndPoint, obj);
 
     const posts = [post, ...this.state.posts];
     this.setState({
@@ -36,7 +37,7 @@ class AxiosMoshContainer extends Component {
       posts,
     });
     try {
-      await axios.put(`${apiEndPoint}/${post.id}`, post);
+      await http.put(`${apiEndPoint}/${post.id}`, post);
       throw new Error("");
     } catch (ex) {
       alert("Error when try to updtate post");
@@ -48,16 +49,19 @@ class AxiosMoshContainer extends Component {
   };
 
   handleDelete = async (post) => {
-    const originalPosts = this.state.posts;
+    const originalPosts = [...this.state.posts];
     const posts = this.state.posts.filter((el) => el.id !== post.id);
     this.setState({
       posts,
     });
     try {
-      await axios.delete(`${apiEndPoint}/${post.id}`);
-      throw new Error("");
-    } catch (error) {
-      alert("Something wrong when delete post");
+      await http.delete(`${apiEndPoint}/${post.id}`);
+      toast.success('Post deleted');
+    } catch (ex) {
+      if(ex.response && ex.response.status === 404){
+        toast.error('Post has been already deleted');
+      }
+      console.log("error", ex);
       this.setState({
         posts: originalPosts,
       });

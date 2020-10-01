@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { ListUsers, AddUsers } from "../../../components";
-import "../../../config/axios-config";
-import axios from "axios";
+import http from '../../../services/http.services';
 
 const userEndpoint = "/users";
 
@@ -12,12 +11,12 @@ class AxiosDymaContainer extends Component {
   };
 
   async componentDidMount() {
-    const { data: users } = await axios.get(userEndpoint);
+    const { data: users } = await http.get(userEndpoint);
     this.setState({
       users,
     });
 
-    // axios
+    // http
     //   .get(userEndpoint)
     //   .then((response) => response.data)
     //   .then((users) => this.setState({ users }))
@@ -27,7 +26,7 @@ class AxiosDymaContainer extends Component {
   handleAddUser = async (user) => {
     const originalUsers = [...this.state.users];
     try {
-      const { data: addUser } = await axios.post(userEndpoint, user);
+      const { data: addUser } = await http.post(userEndpoint, user);
       const users = [addUser, ...this.state.users];
       this.setState({
         users,
@@ -51,7 +50,7 @@ class AxiosDymaContainer extends Component {
       this.setState({
         users,
       });
-      await axios.put(`${userEndpoint}/${user.id}`, user);
+      await http.put(`${userEndpoint}/${user.id}`, user);
     } catch (error) {
       alert(`error : ${error}`);
       originalUsers[userIndex] = { ...originalUser };
@@ -68,7 +67,7 @@ class AxiosDymaContainer extends Component {
       this.setState({
         users,
       });
-      await axios.delete(`${userEndpoint}/${user.id}`);
+      await http.delete(`${userEndpoint}/${user.id}`);
     } catch (error) {
       alert(`error : ${error}`);
       this.setState({
