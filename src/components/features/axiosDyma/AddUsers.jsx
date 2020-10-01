@@ -8,7 +8,7 @@ class AddUser extends Component {
       : { name: "", username: "", email: "" };
   };
 
-  submit = (values, actions) => {
+  submit = (values) => {
     this.props.onSave(values);
   };
 

@@ -1,7 +1,6 @@
 import React from "react";
 
-const ListUsers = (props) => {
-  const users = props.users;
+const ListUsers = ({ users, selectUser, onUpdate, onDelete }) => {
   return (
     <div className="w-100 d-flex flex-row flex-wrap justify-content-center my-3">
       {users && users.length ? (
@@ -9,7 +8,7 @@ const ListUsers = (props) => {
           <div
             key={u.id}
             onClick={() => {
-              props.selectUser(index);
+              selectUser(index);
             }}
             className="card m-2"
             style={{ width: "200px" }}
@@ -20,6 +19,17 @@ const ListUsers = (props) => {
                 <li className="list-group-item">{u.username}</li>
                 <li className="list-group-item">{u.email}</li>
               </ul>
+              <div className="d-flex mt-2">
+                <button
+                  className="btn btn-success mr-2"
+                  onClick={() => onUpdate(u)}
+                >
+                  Update
+                </button>
+                <button className="btn btn-danger" onClick={() => onDelete(u)}>
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         ))

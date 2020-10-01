@@ -1,67 +1,66 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import axios from "axios";
 
-const apiEndPoint = "https://jsonplaceholder.typicode.com/posts";
+const apiEndPoint = "/posts";
 
 class AxiosMoshContainer extends Component {
   state = {
     posts: [],
-    errorDelete: null 
+    errorDelete: null,
   };
 
-  async componentDidMount(){
-    const {data: posts} = await axios.get(apiEndPoint);
+  async componentDidMount() {
+    const { data: posts } = await axios.get(apiEndPoint);
     this.setState({
-      posts
-    })
+      posts,
+    });
   }
 
   handleAdd = async () => {
-    const obj = {title: "Test", body: "TEST TEST TEST"};
-    const {data: post} = await axios.post(apiEndPoint, obj);
-    
+    const obj = { title: "Test", body: "TEST TEST TEST" };
+    const { data: post } = await axios.post(apiEndPoint, obj);
+
     const posts = [post, ...this.state.posts];
     this.setState({
-      posts
+      posts,
     });
   };
 
   handleUpdate = async (post) => {
-    const originalPost = {...post};
+    const originalPost = { ...post };
     post.title = "UPDATE";
     let posts = [...this.state.posts];
     const postIndex = this.state.posts.indexOf(post);
-    posts[postIndex] = {...post};
+    posts[postIndex] = { ...post };
     this.setState({
-      posts
+      posts,
     });
-    try{
+    try {
       await axios.put(`${apiEndPoint}/${post.id}`, post);
-      throw new Error('');
-    }catch (ex) {
-      alert('Error when try to updtate post');
-      posts[postIndex] = {...originalPost}
+      throw new Error("");
+    } catch (ex) {
+      alert("Error when try to updtate post");
+      posts[postIndex] = { ...originalPost };
       this.setState({
-        posts
-      })
+        posts,
+      });
     }
-
   };
 
   handleDelete = async (post) => {
     const originalPosts = this.state.posts;
-    const posts = this.state.posts.filter( el => el.id !== post.id);
+    const posts = this.state.posts.filter((el) => el.id !== post.id);
     this.setState({
-      posts
+      posts,
     });
     try {
       await axios.delete(`${apiEndPoint}/${post.id}`);
-      throw new Error(''); 
+      throw new Error("");
     } catch (error) {
-      alert('Something wrong when delete post');
+      alert("Something wrong when delete post");
       this.setState({
-        posts: originalPosts
-      })
+        posts: originalPosts,
+      });
     }
   };
   render() {
